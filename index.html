@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="The Wedding of Rizqi & Asfida" />
+    <meta
+      property="og:description"
+      content="Kami mengundang Anda untuk hadir di acara pernikahan kami pada tanggal Sabtu, 20 Juni 2026."
+    />
+    <meta
+      property="og:image"
+      content="https://example.com/bagus-ayu/img/thumbnail2.png"
+    />
+    <meta
+      property="og:url"
+      content="https://example.com/bagus-ayu/"
+    />
+    <meta property="og:type" content="website" />
+    <title>RiDa | Wedding</title>
+    <link rel="shortcut icon" href="img/icon2.png" type="image/x-icon" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lato:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="font-sans-jawa">
+    <div id="music-controller" style="display: none">
+      <i class="bi bi-music-note-beamed"></i>
+    </div>
+    <audio id="gamelan-music" loop>
+      <source src="audio/nyidamsari.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div
+      id="cover"
+      class="d-flex flex-column justify-content-center align-items-center text-center text-white p-4"
+    >
+      <div>
+        <!-- <img
+          src="img/wayang.png"
+          alt=""
+          class="wayang justify-content-center"
+        /> -->
+        <h2
+          class="font-serif-jawa"
+          style="font-size: 1.5rem; letter-spacing: 0.2rem"
+        >
+          THE WEDDING OF
+        </h2>
+
+        <h1 class="display-1" style="font-family: 'Great Vibes', cursive;">Rizqi <br> &amp; <br> Asfida</h1>
+
+        <p
+          class="mt-4"
+          style="
+            font-size: 1rem;
+            font-style: italic;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 300;
+          "
+        ></p>
+        <p
+          class="mt-4"
+          style="
+            font-size: 1rem;
+            font-style: italic;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 300;
+          "
+        >
+          "Cinta mampu membangun jembatan yang menghubungkan dua jiwa insan yang berbeda, dan mampu menyatukan dua hati yang terpisah oleh jarak dan waktu."
+        </p>
+        <div id="guest-container" class="mb-4" style="display: none">
+          <p class="mb-2" style="font-size: 1rem">
+            Kepada Yth. Bapak/Ibu/Saudara/i
+          </p>
+          <h3
+            id="guest-name"
+            class="font-serif-jawa"
+            style="font-size: 1.8rem"
+          ></h3>
+        </div>
+        <button id="open-invitation" class="btn btn-jawa mt-5">
+          Open Invitation
+        </button>
+      </div>
+    </div>
+
+    <main id="content" class="d-none">
+      <!-- Dekorasi Bunga (Hanya tampil setelah undangan dibuka) -->
+      <img src="img/flower.png" class="corner-flower top-left" alt="" />
+      <img src="img/flower.png" class="corner-flower top-right" alt="" />
+      <img src="img/flower.png" class="corner-flower bottom-right" alt="" />
+      <nav class="navbar fixed-bottom navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav flex-row justify-content-around w-100">
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#quote"
+              >
+                <i class="bi bi-house-door-fill"></i>
+                <span class="nav-text">Home</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#mempelai"
+              >
+                <i class="bi bi-heart-fill"></i>
+                <span class="nav-text">Mempelai</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#story"
+              >
+                <i class="bi bi-balloon-heart-fill"></i>
+                <span class="nav-text">Story</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#acara"
+              >
+                <i class="bi bi-calendar-heart-fill"></i>
+                <span class="nav-text">Acara</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#countdown"
+              >
+                <i class="bi bi-clock-fill"></i>
+                <span class="nav-text">Countdown</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#gift"
+              >
+                <i class="bi bi-gift-fill"></i>
+                <span class="nav-text">Gift</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex flex-column align-items-center"
+                href="#closing"
+              >
+                <i class="bi bi-check-circle-fill"></i>
+                <span class="nav-text">Thanks</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- qoutes -->
+      <section id="quote" class="quote">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-10">
+              <div class="card-section text-center sway-animation">
+                <i
+                  class="bi bi-quote"
+                  style="font-size: 3rem; color: var(--golden-yellow)"
+                ></i>
+                <h1>Rizqi &amp; Asfida</h1>
+                <p class="tgl">12.12.2026</p>
+                <blockquote class="blockquote mt-3">
+                  <p class="mb-4 font-arab" style="font-size: 1.8rem; line-height: 2">
+                    وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ
+                    اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ
+                    مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ
+                    يَّتَفَكَّرُوْنَ
+                  </p>
+
+                  <p class="mb-4" style="font-size: 1.1rem; line-height: 1.8">
+                    "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia
+                    menciptakan pasangan-pasangan untukmu dari jenismu sendiri,
+                    agar kamu cenderung dan merasa tenteram kepadanya, dan Dia
+                    menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada
+                    yang demikian itu benar-benar terdapat tanda-tanda
+                    (kebesaran Allah) bagi kaum yang berpikir."
+                  </p>
+                  <footer
+                    class="blockquote-footer text-ivory-white font-serif-jawa fs-5"
+                  >
+                    <cite title="Surah Ar-Rum">Q.S. Ar-Rum: 21</cite>
+                  </footer>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- quotes -->
+
+      <!-- couple -->
+      <section id="mempelai" class="mempelai">
+        <div class="container">
+          <div class="card-section">
+            <div class="text-center mb-5">
+              <h2 class="display-5 font-serif-jawa">
+                Mempelai Yang Berbahagia
+              </h2>
+              <p
+                class="font-arab"
+                style="
+                  font-size: 1.8rem;
+                  margin-top: 1rem;
+                "
+              >
+                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+              </p>
+              <p>
+                Maha suci Allah SWT yang telah menciptakan makhluk-Nya
+                berpasang-pasangan. Tanpa mengurangi rasa hormat kami mengundang
+                bapak/ibu/saudara/i untuk hadir pada acara pernikahan kami.
+              </p>
+            </div>
+
+            <div class="row align-items-center justify-content-center text-center">
+              <div class="col-lg-5 col-md-12 mt-3 mt-lg-4 mempelai-pria">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="couple-photo-frame">
+                    <img
+                      src="img/putra.jpeg"
+                      alt="Foto Mempelai Pria"
+                      class="wayang-photo"
+                    />
+                  </div>
+                  <div class="mt-3 mt-md-4">
+                    <h3 class="font-serif-jawa text-sogan-brown couple-name">
+                      Rizqi Mubarok
+                    </h3>
+                    <p class="mt-2 mb-1 couple-desc">Putra pertama dari:</p>
+                    <p class="couple-parents">
+                      <strong>Bapak H. Kholiqul Anam</strong><br />&amp;<br /><strong
+                        >Ibu Hj. Dewi Masruroh</strong
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Simbol & Desktop -->
+              <div class="col-lg-2 d-none d-lg-flex justify-content-center align-items-center text-center">
+                <span
+                  class="couple-ampersand font-serif-jawa"
+                  >&</span
+                >
+              </div>
+
+              <!-- Simbol & Mobile -->
+              <div class="col-12 d-lg-none my-3 my-md-4 text-center">
+                <div class="couple-ampersand-badge">
+                  <span class="font-serif-jawa">&</span>
+                </div>
+              </div>
+
+              <div class="col-lg-5 col-md-12 mt-3 mt-lg-4 mempelai-wanita">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="couple-photo-frame">
+                    <img
+                      src="img/putri.jpeg"
+                      alt="Foto Mempelai Wanita"
+                      class="wayang-photo"
+                    />
+                  </div>
+                  <div class="mt-3 mt-md-4">
+                    <h3 class="font-serif-jawa text-sogan-brown couple-name">
+                      Asfida Rahma
+                    </h3>
+                    <p class="mt-2 mb-1 couple-desc">Putri pertama dari:</p>
+                    <p class="couple-parents">
+                      <strong>Bapak Ramli</strong><br />&amp;<br /><strong
+                        >Ibu Sri Lestari</strong
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- couple -->
+
+      <!-- love story -->
+      <section id="story" class="love-story">
+        <div class="container">
+          <div class="card-section">
+            <div class="text-center mb-5">
+              <h2 class="display-5 font-serif-jawa">Kisah Kasih Kami</h2>
+              <p class="lead">
+                Dari sebuah perjumpaan yang sederhana, terajut rasa saling memahami hingga kami mantap melangkah bersama dalam ikatan suci pernikahan.
+              </p>
+            </div>
+
+            <div class="timeline">
+              <!-- Item 1: Awal Bersua -->
+              <div class="timeline-item left">
+                <div class="timeline-icon">
+                  <i class="bi bi-chat-heart-fill"></i>
+                </div>
+                <div class="story-card">
+                  <span class="story-badge">Oktober 2022</span>
+                  <h3 class="story-title">Awal Mula Bersua</h3>
+                  <p class="story-desc">
+                    Tak ada kebetulan dalam takdir Allah. Sebuah perjumpaan sederhana menjadi pintu awal komunikasi kami. Dari obrolan hangat dan kecocokan yang mengalir tanpa rekayasa, benih ketertarikan mulai bersemi.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 2: Merajut Komitmen -->
+              <div class="timeline-item right">
+                <div class="timeline-icon">
+                  <i class="bi bi-heart-half"></i>
+                </div>
+                <div class="story-card">
+                  <span class="story-badge">Mei 2024</span>
+                  <h3 class="story-title">Merajut Komitmen</h3>
+                  <p class="story-desc">
+                    Seiring waktu yang bergulir, saling percaya dan kesungguhan hati membawa kami pada komitmen yang lebih matang. Kami bersepakat untuk saling membersamai, saling menguatkan, dan melangkah dengan niat ibadah.
+                  </p>
+                  <img src="img/couple1.jpeg" alt="Momen Indah Berdua" class="story-img" />
+                </div>
+              </div>
+
+              <!-- Item 3: Lamaran / Khitbah -->
+              <div class="timeline-item left">
+                <div class="timeline-icon">
+                  <i class="bi bi-gem"></i>
+                </div>
+                <div class="story-card">
+                  <span class="story-badge">Agustus 2026</span>
+                  <h3 class="story-title">Ikatan Janji (Khitbah)</h3>
+                  <p class="story-desc">
+                    Dengan doa dan restu hangat kedua orang tua serta keluarga besar, langkah keseriusan ini diikat dalam prosesi khitbah. Cincin tersemat menjadi saksi tekad kami untuk menyatukan dua keluarga.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 4: Menuju Pelaminan -->
+              <div class="timeline-item right">
+                <div class="timeline-icon">
+                  <i class="bi bi-heart-fill"></i>
+                </div>
+                <div class="story-card">
+                  <span class="story-badge">Desember 2026</span>
+                  <h3 class="story-title">Menuju Babak Baru</h3>
+                  <p class="story-desc">
+                    Kini, rasa syukur mendalam kami haturkan atas segala kemudahan-Nya. Kami siap menyambut hari bahagia, mengikrarkan janji suci di hadapan Allah SWT untuk membangun bahtera sakinah, mawaddah, warahmah.
+                  </p>
+                  <img src="img/couple2.jpeg" alt="Menuju Pelaminan" class="story-img" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- love story -->
+
+      <!-- info -->
+      <section id="acara" class="acara">
+        <div class="container">
+          <div class="card-section">
+            <div class="row justify-content-center text-center mt-7">
+              <h2 class="font-serif-jawa">Waktu Yang Dinanti</h2>
+              <p class="lead">
+                Sebuah kehormatan dan kebahagiaan bagi kami apabila
+                Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.
+              </p>
+            </div>
+
+            <div class="row justify-content-center g-4 bounce">
+              <div class="col-lg-5 col-md-10 col-12">
+                <div class="card card-jawa text-center h-100">
+                  <div class="card-header">
+                    <h3 class="font-serif-jawa mb-0">
+                      Akad Nikah & Resepsi
+                    </h3>
+                  </div>
+                  <div class="card-body p-4">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-calendar-heart icon"></i>
+                        <span>
+                          <strong>Sabtu, 12 Desember 2026</strong>
+                        </span>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-clock icon"></i>
+                        <span>Pukul 08:00 WIB - Selesai</span>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill icon"></i>
+                        <span>
+                          Kediaman Mempelai Putri Jl. Masjid Al-Huda 59 Rt 6/ rw 2 kel. Ngadirejo kec. Kota kediri jawa Timur.
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="card-footer bg-transparent border-0 pb-4 text-center"
+                  >
+                    <div
+                      class="d-grid gap-2 d-sm-flex justify-content-sm-center"
+                    >
+                      <a
+                        href="https://maps.app.goo.gl/wpruUhjLbLnME4XX6"
+                        target="_blank"
+                        class="btn btn-outline-light"
+                      >
+                        <i class="bi bi-pin-map-fill"></i> Lihat Peta
+                      </a>
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-jawa dropdown-toggle"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-calendar-plus-fill"></i> Simpan Tanggal
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" href="#" id="google-calendar-link">
+                              <i class="bi bi-google me-2"></i>Google Calendar
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" id="ics-download-link">
+                              <i class="bi bi-apple me-2"></i>Apple/Outlook/Lainnya
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-5 col-md-10 col-12">
+                <div class="card card-jawa text-center h-100">
+                  <div class="card-header">
+                    <h3 class="font-serif-jawa mb-0">
+                      Resepsi
+                    </h3>
+                  </div>
+                  <div class="card-body p-4">
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-calendar-heart icon"></i>
+                        <span>
+                          <strong>Ahad, 13 Desember 2026</strong>
+                        </span>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-clock icon"></i>
+                        <span>Pukul 10:00 WIB - Selesai</span>
+                      </li>
+                      <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-geo-alt-fill icon"></i>
+                        <span>
+                          Kediaman Mempelai Putra GG Masjid Al- Abror Dsn. Tebokan, Ds. Boro, Kec. Kedungwaru, Kab. Tulungagung.
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="card-footer bg-transparent border-0 pb-4 text-center"
+                  >
+                    <div
+                      class="d-grid gap-2 d-sm-flex justify-content-sm-center"
+                    >
+                      <a
+                        href="https://maps.app.goo.gl/wpruUhjLbLnME4XX6"
+                        target="_blank"
+                        class="btn btn-outline-light"
+                      >
+                        <i class="bi bi-pin-map-fill"></i> Lihat Peta
+                      </a>
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-jawa dropdown-toggle"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <i class="bi bi-calendar-plus-fill"></i> Simpan Tanggal
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a class="dropdown-item" href="#" id="google-calendar-link">
+                              <i class="bi bi-google me-2"></i>Google Calendar
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#" id="ics-download-link">
+                              <i class="bi bi-apple me-2"></i>Apple/Outlook/Lainnya
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- info -->
+
+      <!-- countdown -->
+      <section id="countdown" class="countdown">
+        <div class="container">
+          <div class="card-section text-center">
+            <h2 class="font-serif-jawa display-5 mb-4">Menuju Hari Bahagia</h2>
+
+            <div
+              id="timer-container"
+              class="d-flex justify-content-center gap-3 gap-md-4 bounce"
+            >
+              <div class="timer-box">
+                <span id="days">00</span>
+                <small>Hari</small>
+              </div>
+              <div class="timer-box">
+                <span id="hours">00</span>
+                <small>Jam</small>
+              </div>
+              <div class="timer-box">
+                <span id="minutes">00</span>
+                <small>Menit</small>
+              </div>
+              <div class="timer-box">
+                <span id="seconds">00</span>
+                <small>Detik</small>
+              </div>
+            </div>
+
+            <div id="countdown-expired" class="d-none">
+              <h3 class="font-serif-jawa">Waktu yang dinanti telah tiba!</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- countdown -->
+
+      <!-- rsvp -->
+      <section id="rsvp" class="rsvp">
+        <div class="container">
+          <div class="card-section">
+            <div class="text-center mb-4">
+              <h2 class="display-5 font-serif-jawa">Buku Tamu & RSVP</h2>
+              <p class="lead">
+                Kirimkan ucapan dan doa restu Anda sekaligus konfirmasikan
+                kehadiran Anda melalui buku tamu digital kami.
+              </p>
+            </div>
+
+            <div class="text-center mb-5">
+              <button
+                type="button"
+                class="btn btn-jawa btn-lg"
+                data-bs-toggle="modal"
+                data-bs-target="#rsvpModal"
+              >
+                <i class="bi bi-pencil-square me-2"></i> Isi Buku Tamu & RSVP
+              </button>
+            </div>
+
+            <div class="row justify-content-center">
+              <div class="col-lg-8">
+                <div id="wish-wall" class="wish-wall-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- rsvp -->
+
+      <!-- rsvp modal -->
+      <div
+        class="modal fade"
+        id="rsvpModal"
+        tabindex="-1"
+        aria-labelledby="rsvpModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title font-serif-jawa" id="rsvpModalLabel">
+                Isi Buku Tamu & RSVP
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form id="rsvp-form-modal">
+                <div class="mb-3">
+                  <label for="nama" class="form-label">Nama Anda</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nama"
+                    name="Nama"
+                    required
+                    autocomplete="off"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="konfirmasi" class="form-label"
+                    >Konfirmasi Kehadiran</label
+                  >
+                  <select
+                    class="form-select"
+                    id="konfirmasi"
+                    name="Konfirmasi"
+                    required
+                  >
+                    <option value="" selected disabled>
+                      Pilih salah satu...
+                    </option>
+                    <option value="Akan Hadir">Akan Hadir</option>
+                    <option value="Tidak Dapat Hadir">Tidak Dapat Hadir</option>
+                  </select>
+                </div>
+
+                <div
+                  class="mb-3"
+                  id="jumlah-tamu-wrapper"
+                  style="display: none"
+                >
+                  <label for="jumlah" class="form-label"
+                    >Jumlah Tamu (termasuk Anda)</label
+                  >
+                  <select class="form-select" id="jumlah" name="Jumlah">
+                    <option value="1">1 Orang</option>
+                    <option value="2">2 Orang</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="ucapan" class="form-label"
+                    >Ucapan & Doa untuk Kami</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="ucapan"
+                    name="Ucapan"
+                    rows="4"
+                    required
+                  ></textarea>
+                </div>
+
+                <div
+                  id="modal-error-alert"
+                  class="alert alert-danger mt-3 d-none"
+                  role="alert"
+                >
+                  Oops! Gagal mengirim. Mohon coba lagi.
+                </div>
+
+                <div class="modal-footer pb-0">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Batal
+                  </button>
+                  <button type="submit" id="submit-button" class="btn btn-jawa">
+                    <span id="button-text">Kirim Jawaban</span>
+                    <span
+                      id="button-spinner"
+                      class="spinner-border spinner-border-sm d-none"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- rsvp modal -->
+
+      <!-- gift -->
+      <section id="gift" class="gift">
+        <div class="container">
+          <div class="card-section">
+            <div class="text-center mb-5">
+              <h2 class="display-5 font-serif-jawa">Tanda Kasih</h2>
+              <p class="lead">
+                Dengan penuh rasa syukur, doa restu Anda adalah berkah terindah
+                bagi pernikahan kami. Jika Anda berkesempatan untuk memberikan
+                tanda kasih, insya Allah akan menjadi amanah yang kami
+                manfaatkan untuk membangun keluarga yang sakinah, mawaddah,
+                warahmah.
+              </p>
+            </div>
+
+            <div class="row justify-content-center g-4">
+              <!-- BSI - Asfida Rahma -->
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="gift-card text-center">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg"
+                    alt="Logo Bank BSI"
+                    class="gift-logo"
+                  />
+                  <p class="mt-3 mb-1">Bank Syariah Indonesia (BSI)</p>
+                  <h4 class="font-monospace fw-bold mb-1">7289582678</h4>
+                  <p class="mb-3">a.n. Asfida Rahma</p>
+                  <button
+                    class="btn btn-outline-dark btn-copy"
+                    data-copy="7289582678"
+                  >
+                    <i class="bi bi-clipboard me-2"></i> Salin Nomor Rekening
+                  </button>
+                </div>
+              </div>
+
+              <!-- BSI - Rizqi Mubarok -->
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="gift-card text-center">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Bank_Syariah_Indonesia.svg"
+                    alt="Logo Bank BSI"
+                    class="gift-logo"
+                  />
+                  <p class="mt-3 mb-1">Bank Syariah Indonesia (BSI)</p>
+                  <h4 class="font-monospace fw-bold mb-1">7280564518</h4>
+                  <p class="mb-3">a.n. Rizqi Mubarok</p>
+                  <button
+                    class="btn btn-outline-dark btn-copy"
+                    data-copy="7280564518"
+                  >
+                    <i class="bi bi-clipboard me-2"></i> Salin Nomor Rekening
+                  </button>
+                </div>
+              </div>
+
+              <!-- BRI - Rizqi Mubarok -->
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="gift-card text-center">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/6/68/BANK_BRI_logo.svg"
+                    alt="Logo Bank BRI"
+                    class="gift-logo"
+                  />
+                  <p class="mt-3 mb-1">Bank Rakyat Indonesia (BRI)</p>
+                  <h4 class="font-monospace fw-bold mb-1">001201098765502</h4>
+                  <p class="mb-3">a.n. Rizqi Mubarok</p>
+                  <button
+                    class="btn btn-outline-dark btn-copy"
+                    data-copy="001201098765502"
+                  >
+                    <i class="bi bi-clipboard me-2"></i> Salin Nomor Rekening
+                  </button>
+                </div>
+              </div>
+
+              <!-- SeaBank - Asfida Rahma -->
+              <div class="col-lg-6 col-md-6 col-12">
+                <div class="gift-card text-center">
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/a/ac/SeaBank.svg"
+                    alt="Logo SeaBank"
+                    class="gift-logo"
+                  />
+                  <p class="mt-3 mb-1">SeaBank</p>
+                  <h4 class="font-monospace fw-bold mb-1">901234567890</h4>
+                  <p class="mb-3">a.n. Asfida Rahma</p>
+                  <button
+                    class="btn btn-outline-dark btn-copy"
+                    data-copy="901234567890"
+                  >
+                    <i class="bi bi-clipboard me-2"></i> Salin Nomor Rekening
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Alamat Kirim Kado Fisik Offline -->
+            <div class="row justify-content-center mt-4">
+              <div class="col-lg-8 col-md-10 col-12">
+                <div class="gift-card text-center p-4">
+                  <div
+                    class="d-inline-flex justify-content-center align-items-center mb-3 mx-auto"
+                    style="width: 55px; height: 55px; border-radius: 50%; background: rgba(197, 155, 99, 0.15); color: var(--earthy-brown); font-size: 1.6rem;"
+                  >
+                    <i class="bi bi-box2-heart-fill"></i>
+                  </div>
+                  <h3 class="font-serif-jawa mb-2" style="color: var(--earthy-brown);">
+                    Kirim Kado Fisik
+                  </h3>
+                  <p class="mb-3" style="font-size: 0.95rem; max-width: 600px; margin: 0 auto;">
+                    Bagi Bapak/Ibu/Saudara/i yang ingin mengirimkan ungkapan tanda kasih berupa kado fisik secara langsung/ekspedisi, dapat ditujukan ke kediaman mempelai wanita:
+                  </p>
+                  <div
+                    class="p-3 my-3 rounded"
+                    style="background: rgba(255, 255, 255, 0.9); border: 1.5px dashed var(--antique-gold);"
+                  >
+                    <p class="fw-bold mb-1" style="color: var(--earthy-brown); font-size: 1.15rem;">
+                      Penerima: Asfida Rahma
+                    </p>
+                    <p class="mb-0" style="color: var(--dark-cocoa); line-height: 1.6;">
+                      Jl. Masjid Al-Huda No. 59, RT 06 / RW 02, Kel. Ngadirejo, Kec. Kota Kediri, Kota Kediri, Jawa Timur
+                    </p>
+                  </div>
+                  <div class="d-flex justify-content-center gap-2 flex-wrap mt-2">
+                    <button
+                      class="btn btn-outline-dark btn-copy"
+                      data-copy="Asfida Rahma - Jl. Masjid Al-Huda No. 59, RT 06 / RW 02, Kel. Ngadirejo, Kec. Kota Kediri, Kota Kediri, Jawa Timur"
+                    >
+                      <i class="bi bi-clipboard me-2"></i> Salin Alamat
+                    </button>
+                    <a
+                      href="https://maps.app.goo.gl/wpruUhjLbLnME4XX6"
+                      target="_blank"
+                      class="btn btn-outline-dark"
+                    >
+                      <i class="bi bi-pin-map-fill me-2"></i> Lihat Lokasi
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- gift -->
+
+      <!-- thanks -->
+      <section id="closing" class="closing">
+        <div class="container">
+          <div class="card-section text-center">
+            <h2
+              class="display-4 font-serif-jawa"
+              style="color: var(--earthy-brown); text-shadow: 0 1px 2px rgba(197, 155, 99, 0.2);"
+            >
+              Terima Kasih
+            </h2>
+
+            <p class="lead mt-4 mx-auto" style="max-width: 700px">
+              Merupakan suatu kehormatan dan kebahagiaan yang tak terhingga bagi
+              kami, atas kehadiran serta doa restu Bapak/Ibu/Saudara/i sekalian
+              dalam acara pernikahan kami. Terima kasih telah menjadi bagian
+              dari hari terindah kami.
+            </p>
+
+            <div class="mt-5">
+              <p class="mb-1">Kami yang berbahagia,</p>
+              <img src="img/icon2.png" alt="" />
+              <h1 class="display-3 font-serif-jawa">Rizqi &amp; Asfida</h1>
+            </div>
+
+            <hr
+              class="my-5 mx-auto"
+              style="width: 200px; border-top: 1px solid var(--golden-yellow)"
+            />
+
+            <div class="row justify-content-center">
+              <div class="col-md-5">
+                <p class="mb-0"><strong>Kel. Bapak H. Kholiqul Anam</strong></p>
+                <p><strong>&amp; Ibu Hj. Dewi Masruroh</strong></p>
+              </div>
+              <div class="col-md-5">
+                <p class="mb-0"><strong>Kel. Bapak Ramli</strong></p>
+                <p><strong>&amp; Ibu Sri Lestari</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="main-footer" class="site-footer" style="display: none">
+          <div class="container text-center">
+            <div class="mb-3">
+            </div>
+            <p class="mb-0">&copy; 2026 Rizqi &amp; Asfida. All Rights Reserved.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- thanks -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
