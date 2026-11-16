@@ -9,6 +9,14 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbxMbqm7H4b0x6cROgL8ry
 
 // Menjalankan semua kode setelah halaman HTML selesai dimuat
 document.addEventListener("DOMContentLoaded", function () {
+  // Sembunyikan cover dan content saat preloader aktif
+  const cover = document.getElementById("cover");
+  const content = document.getElementById("content");
+  const preloader = document.getElementById("preloader");
+
+  if (cover) cover.style.display = "none";
+  // content tetap pakai class d-none dari HTML, jangan set inline style (akan bentrok saat remove d-none)
+
   // --- LOGIKA NAMA TAMU DARI URL (MENGGUNAKAN HASH '#') ---
   const guestName = decodeURIComponent(window.location.hash.substring(1)).replace(/\+/g, ' ').trim();
   const guestContainer = document.getElementById("guest-container");
@@ -21,8 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // --- BAGIAN 1: DEKLARASI SEMUA ELEMEN ---
-  const cover = document.getElementById("cover");
-  const content = document.getElementById("content");
   const openButton = document.getElementById("open-invitation");
   const music = document.getElementById("gamelan-music");
   const musicController = document.getElementById("music-controller");
@@ -47,6 +53,32 @@ document.addEventListener("DOMContentLoaded", function () {
   // Sembunyikan saat cover tampil
   if (musicController) musicController.style.display = "none";
   if (footer) footer.style.display = "none";
+
+  // --- PRELOADER LOGIC ---
+  function finishPreloader() {
+    if (!preloader) return;
+    preloader.classList.add("loaded");
+
+    // Tampilkan cover dengan animasi fade-in setelah preloader hilang
+    setTimeout(() => {
+      if (cover) {
+        cover.style.display = "flex";
+        cover.style.opacity = "0";
+        cover.style.transition = "opacity 1.2s ease";
+        requestAnimationFrame(() => {
+          cover.style.opacity = "1";
+        });
+      }
+    }, 600);
+
+    // Bersihkan preloader dari DOM setelah transisi selesai
+    setTimeout(() => {
+      if (preloader) preloader.style.display = "none";
+    }, 1400);
+  }
+
+  // Tunggu progress bar selesai (3.5s) + buffer agar animasi teks sempurna
+  setTimeout(finishPreloader, 4200);
 
   // --- BAGIAN 2: FUNGSI PEMBANTU (HELPER FUNCTIONS) ---
   function addWishToWall(nama, ucapan, konfirmasi, rowNumber) {
@@ -108,10 +140,39 @@ document.addEventListener("DOMContentLoaded", function () {
         // 6. Jalankan animasi GSAP
         setupGsapAnimations();
 
-        // 7. Animasi Bunga Masuk (muncul halus dari samping)
-        gsap.from(".corner-flower.top-left", { left: -150, opacity: 0, duration: 2.5, ease: "power2.out" });
-        gsap.from(".corner-flower.top-right", { right: -150, opacity: 0, duration: 2.5, ease: "power2.out" });
-        gsap.from(".corner-flower.bottom-right", { right: -150, opacity: 0, duration: 2.5, ease: "power2.out" });
+        // 7. Animasi Dekor Pojok Bawah Masuk (fade-in halus dari bawah)
+        gsap.from(".corner-dekor.bottom-left", {
+          y: 60, opacity: 0,
+          duration: 1.5, ease: "power2.out"
+        });
+        gsap.from(".corner-dekor.bottom-right", {
+          y: 60, opacity: 0,
+          duration: 1.5, ease: "power2.out"
+        });
+
+        // 8. Animasi Pohon Tumbuh dari Belakang - tree1.png dulu, lalu tree.png di atasnya
+        gsap.fromTo(".tree-bottom", {
+          scaleY: 0,
+          opacity: 0,
+          transformOrigin: "bottom center"
+        }, {
+          scaleY: 1,
+          opacity: 1,
+          duration: 2,
+          ease: "power2.out"
+        });
+
+        gsap.fromTo(".tree-top", {
+          scaleY: 0,
+          opacity: 0,
+          transformOrigin: "bottom center"
+        }, {
+          scaleY: 1,
+          opacity: 1,
+          duration: 2,
+          ease: "power2.out",
+          delay: 1
+        });
       }, 1500); // Samakan dengan durasi transisi
     });
   }
@@ -350,6 +411,27 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
+    // Helper: reveal teks per-kata dengan efek bounce (untuk judul card)
+    function revealTextBounce(selector, trigger) {
+      const element = document.querySelector(selector);
+      if (!element) return;
+      const split = new SplitType(element, { types: "words" });
+      gsap.from(split.words, {
+        opacity: 0,
+        y: 40,
+        filter: "blur(4px)",
+        duration: 1.2,
+        delay: 0.6,           // Animasi mulai lebih lambat setelah terpicu
+        stagger: 0.12,        // Kata muncul lebih lambat satu per satu
+        ease: "elastic.out(1, 0.5)",
+        scrollTrigger: {
+          trigger: trigger || selector,
+          start: START,
+          toggleActions: "play none none none",
+        },
+      });
+    }
+
     // Helper: fade-up halus untuk elemen umum
     function fadeUp(selector, options = {}) {
       gsap.from(selector, {
@@ -368,24 +450,53 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // 1. Section #quote
+    // 1. Section #quote — animasi lebih menarik: pop-up + rotasi halus + stagger dinamis
     const quoteCard = document.querySelector("#quote .card-section");
     if (quoteCard) {
       const quoteTl = gsap.timeline({
         scrollTrigger: { trigger: quoteCard, start: START, toggleActions: "play none none none" },
       });
       quoteTl
-        .from(quoteCard, { opacity: 0, y: 30, filter: "blur(6px)", duration: 1.2, ease: EASE })
+        // Card muncul dengan efek pop dramatis (scale 0.5 → 1) + rotasi + blur tebal
+        .from(quoteCard, {
+          opacity: 0,
+          scale: 0.5,
+          rotation: -5,
+          filter: "blur(12px)",
+          duration: 1.6,
+          ease: "back.out(1.8)"
+        })
         .add(() => quoteCard.classList.add("is-visible"))
-        .from(
-          "#quote .card-section > *",
-          { opacity: 0, y: 16, duration: 0.9, stagger: 0.12, ease: EASE },
-          "-=0.9"
-        );
+        // Setelah reveal selesai, aktifkan efek melayang terus-menerus
+        .add(() => quoteCard.classList.add("quote-float"))
+        // Ikon kutipan: scale dramatis dari 0 + rotasi 20deg + bounce
+        .from("#quote .bi-quote", {
+          opacity: 0,
+          scale: 0,
+          rotation: 20,
+          duration: 1.2,
+          ease: "back.out(2)"
+        }, "-=1.2")
+        // Judul & tanggal: turun dari atas dengan rotasi bergantian
+        .from("#quote h1, #quote .tgl", {
+          opacity: 0,
+          y: 30,
+          rotation: -4,
+          duration: 1,
+          ease: "power3.out",
+          stagger: 0.15
+        }, "-=0.9")
+        // Ayat Al-Quran: muncul perlahan dari bawah
+        .from("#quote blockquote", {
+          opacity: 0,
+          y: 35,
+          duration: 1.2,
+          ease: "power3.out"
+        }, "-=0.7");
     }
 
-    // 2. Section #mempelai
-    revealText("#mempelai h2", "#mempelai");
+    // 2. Section #mempelai — judul dengan animasi bounce
+    revealTextBounce("#mempelai h2", "#mempelai");
     fadeUp("#mempelai > .container > p", { trigger: "#mempelai", start: "top 82%" });
 
     // Foto & teks mempelai: fade-up anggun dan lembut tanpa glitch horizontal di HP
@@ -399,29 +510,166 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollTrigger: { trigger: ".mempelai-pria", start: "top 82%" },
     });
 
-    // 2b. Section #story (Love Story)
-    revealText("#story h2", "#story");
-    fadeUp("#story .lead", { trigger: "#story", start: "top 80%" });
-    gsap.from("#story .timeline-item", {
+    // 2b. Section #story (Love Story) — card muncul dengan efek flip 3D dramatis
+    const storyCard = document.querySelector("#story .card-section");
+    if (storyCard) {
+      gsap.from(storyCard, {
+        opacity: 0,
+        rotationX: 20,
+        scale: 0.85,
+        filter: "blur(8px)",
+        duration: 1.5,
+        ease: "back.out(1.8)",
+        scrollTrigger: {
+          trigger: storyCard,
+          start: "top 82%",
+          toggleActions: "play none none none",
+        },
+      });
+    }
+
+    // 2b. Section #story — setiap kartu animasi saat baru masuk layar (bersamaan dengan posisi aslinya)
+    gsap.from("#story .timeline-item:nth-child(1) .story-card", {
       opacity: 0,
-      y: 35,
-      filter: "blur(4px)",
-      duration: 1.0,
-      stagger: 0.2,
-      ease: EASE,
-      scrollTrigger: { trigger: "#story .timeline", start: "top 85%" },
+      x: 80,        // mulai dari kanan layar
+      filter: "blur(8px)",
+      duration: 1.1,
+      ease: "back.out(1.5)",
+      scrollTrigger: {
+        trigger: "#story .timeline-item:nth-child(1) .story-card",
+        start: "top 88%",
+        toggleActions: "play none none none",
+      },
     });
 
-    // 3. Section #acara
-    revealText("#acara h2", "#acara");
+    gsap.from("#story .timeline-item:nth-child(2) .story-card", {
+      opacity: 0,
+      x: -80,       // mulai dari kiri layar
+      filter: "blur(8px)",
+      duration: 1.1,
+      ease: "back.out(1.5)",
+      scrollTrigger: {
+        trigger: "#story .timeline-item:nth-child(2) .story-card",
+        start: "top 88%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    gsap.from("#story .timeline-item:nth-child(3) .story-card", {
+      opacity: 0,
+      x: 80,        // mulai dari kanan layar
+      filter: "blur(8px)",
+      duration: 1.1,
+      ease: "back.out(1.5)",
+      scrollTrigger: {
+        trigger: "#story .timeline-item:nth-child(3) .story-card",
+        start: "top 88%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    gsap.from("#story .timeline-item:nth-child(4) .story-card", {
+      opacity: 0,
+      x: -80,       // mulai dari kiri layar
+      filter: "blur(8px)",
+      duration: 1.1,
+      ease: "back.out(1.5)",
+      scrollTrigger: {
+        trigger: "#story .timeline-item:nth-child(4) .story-card",
+        start: "top 88%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story — timeline icon berputar dan membesar saat muncul
+    gsap.from("#story .timeline-icon", {
+      opacity: 0,
+      scale: 0,
+      rotation: 360,
+      duration: 1,
+      stagger: 0.4,
+      ease: "back.out(2)",
+      scrollTrigger: {
+        trigger: "#story .timeline",
+        start: "top 78%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story — badge tanggal muncul seperti stempel
+    gsap.from("#story .story-badge", {
+      opacity: 0,
+      y: 15,
+      scale: 0.6,
+      rotation: -5,
+      duration: 0.9,
+      stagger: 0.25,
+      ease: "elastic.out(1, 0.6)",
+      scrollTrigger: {
+        trigger: "#story .timeline",
+        start: "top 80%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story — judul cerita muncul satu per satu dengan efek tulis
+    gsap.from("#story .story-title", {
+      opacity: 0,
+      y: 20,
+      duration: 0.9,
+      stagger: 0.3,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#story .timeline",
+        start: "top 82%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story — deskripsi muncul dengan blur halus
+    gsap.from("#story .story-desc", {
+      opacity: 0,
+      y: 25,
+      filter: "blur(6px)",
+      duration: 1.1,
+      stagger: 0.35,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#story .timeline",
+        start: "top 84%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story — gambar muncul dengan efek zoom-in pelan
+    gsap.from("#story .story-img", {
+      opacity: 0,
+      scale: 0.7,
+      rotation: -5,
+      duration: 1.2,
+      stagger: 0.5,
+      ease: "back.out(1.6)",
+      scrollTrigger: {
+        trigger: "#story .timeline",
+        start: "top 85%",
+        toggleActions: "play none none none",
+      },
+    });
+
+    // 2b. Section #story (Love Story) — judul section dengan animasi bounce
+    revealTextBounce("#story h2", "#story");
+    fadeUp("#story .lead", { trigger: "#story", start: "top 80%" });
+
+    // 3. Section #acara — judul dengan animasi bounce
+    revealTextBounce("#acara h2", "#acara");
     fadeUp("#acara .lead", { trigger: "#acara", start: "top 80%" });
     gsap.from("#acara .card", {
       opacity: 0, y: 40, filter: "blur(6px)", duration: 1.3, ease: "expo.out",
       scrollTrigger: { trigger: "#acara .card", start: "top 85%" },
     });
 
-    // 4. Section #countdown — timer-box muncul berurut, drift vertikal pendek
-    revealText("#countdown h2", "#countdown");
+    // 4. Section #countdown — judul dengan animasi bounce
+    revealTextBounce("#countdown h2", "#countdown");
     gsap.from(".timer-box", {
       opacity: 0, y: 30, filter: "blur(4px)", duration: 0.9,
       stagger: 0.12, // dari kiri ke kanan, lebih natural untuk countdown
@@ -429,22 +677,22 @@ document.addEventListener("DOMContentLoaded", function () {
       scrollTrigger: { trigger: ".timer-box", start: "top 92%" },
     });
 
-    // 5. Section #rsvp
-    revealText("#rsvp h2", "#rsvp");
+    // 5. Section #rsvp — judul dengan animasi bounce
+    revealTextBounce("#rsvp h2", "#rsvp");
     fadeUp("#rsvp .lead", { trigger: "#rsvp", start: "top 80%" });
     fadeUp("#rsvp .btn-jawa", { trigger: "#rsvp .btn-jawa", start: "top 88%", y: 18 });
     fadeUp("#wish-wall", { trigger: "#wish-wall", start: "top 88%", y: 40 });
 
-    // 6. Section #gift
-    revealText("#gift h2", "#gift");
+    // 6. Section #gift — judul dengan animasi bounce
+    revealTextBounce("#gift h2", "#gift");
     fadeUp("#gift .lead", { trigger: "#gift", start: "top 80%" });
     gsap.from("#gift .gift-card", {
       opacity: 0, y: 30, filter: "blur(6px)", duration: 1.1, stagger: 0.18, ease: EASE,
       scrollTrigger: { trigger: "#gift .gift-card", start: "top 88%", toggleActions: "play none none none" },
     });
 
-    // 7. Section #closing — heading reveal per kata (bukan flip 3D)
-    revealText("#closing h2", "#closing h2");
+    // 7. Section #closing — judul dengan animasi bounce
+    revealTextBounce("#closing h2", "#closing h2");
     fadeUp("#closing .lead", { trigger: "#closing .lead", start: "top 92%" });
     fadeUp("#closing .mt-5", { trigger: "#closing .mt-5", start: "top 92%", y: 24 });
     // Garis pemisah: lebar dari 0 ke penuh, lebih elegan daripada scale dari 0

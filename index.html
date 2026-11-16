@@ -45,11 +45,25 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="font-sans-jawa">
+    <!-- Preloader Sebelum Masuk Cover Undangan -->
+    <div id="preloader">
+      <div class="preloader-content">
+        <div class="love-icon">
+          <i class="bi bi-heart-fill"></i>
+        </div>
+        <h2 class="welcome-title">welcome to my wedding</h2>
+        <h1 class="couple-names">Rizqi &amp; Asfida</h1>
+        <div class="preloader-progress">
+          <div class="preloader-bar"></div>
+        </div>
+      </div>
+    </div>
+
     <div id="music-controller" style="display: none">
       <i class="bi bi-music-note-beamed"></i>
     </div>
     <audio id="gamelan-music" loop>
-      <source src="audio/nyidamsari.mp3" type="audio/mpeg" />
+      <source src="audio/diakhirperang.mp3" type="audio/mpeg" />
     </audio>
 
     <div
@@ -114,10 +128,20 @@
     </div>
 
     <main id="content" class="d-none">
-      <!-- Dekorasi Bunga (Hanya tampil setelah undangan dibuka) -->
-      <img src="img/flower.png" class="corner-flower top-left" alt="" />
-      <img src="img/flower.png" class="corner-flower top-right" alt="" />
-      <img src="img/flower.png" class="corner-flower bottom-right" alt="" />
+      <!-- Dekorasi Pojok Bawah (Hanya tampil setelah undangan dibuka) -->
+      <img src="img/dekorleft.png" class="corner-dekor bottom-left" alt="" />
+      <img src="img/dekor1.png" class="corner-dekor bottom-right" alt="" />
+
+      <!-- Hiasan Pohon Kiri dan Kanan (setengah terlihat, di belakang navbar) -->
+      <div class="tree-pair tree-left">
+        <img src="img/tree1.png" class="tree-bottom" alt="" />
+        <img src="img/tree.png" class="tree-top" alt="" />
+      </div>
+      <div class="tree-pair tree-right">
+        <img src="img/tree1.png" class="tree-bottom" alt="" />
+        <img src="img/tree.png" class="tree-top" alt="" />
+      </div>
+
       <nav class="navbar fixed-bottom navbar-dark">
         <div class="container-fluid">
           <ul class="navbar-nav flex-row justify-content-around w-100">
@@ -193,9 +217,10 @@
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-md-8 col-10">
-              <div class="card-section text-center sway-animation">
+              <div class="card-section text-center">
+                <div class="quote-shimmer"></div>
                 <i
-                  class="bi bi-quote"
+                  class="bi bi-quote quote-icon-glow"
                   style="font-size: 3rem; color: var(--golden-yellow)"
                 ></i>
                 <h1>Rizqi &amp; Asfida</h1>
