@@ -134,31 +134,55 @@
     </div>
 
     <script>
-      function getMessageTemplate(
-        guestName,
-        invitationLink,
-        pria,
-        wanita,
-        signature,
-      ) {
-        return `Kepada Yth.\nBapak/Ibu/Saudara/i\n\n_Assalamualaikum Warahmatullahi Wabarakaatuh_\nDengan memohon rahmat dan ridho Allah SWT, perkenankan kami mengundang Bapak/Ibu/Saudara/i *${guestName}* untuk menghadiri acara pernikahan kami  \nUntuk informasi detail mengenai acara, silahkan kunjungi link dibawah ini :\n \n\n*${invitationLink}*\n\nMerupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\nAtas kehadiran dan doa restunya kami ucapkan terima kasih.\n_Wassalamualaikum Warahmatullahi Wabarakaatuh_\n\nHormat kami,\n*${signature}*`;
+      // ===================================================================
+      // KONFIGURASI — Sesuaikan dengan undangan Anda
+      // ===================================================================
+      const BASE_URL = "https://ridawedding.vercel.app/"; // Ganti dengan URL undangan Anda (akhiri dengan /)
+      const NAMA_PRIA = "Muhammad Rizqi Mubarok";
+      const NAMA_WANITA = "Asfida Rahma";
+      const SIGNATURE = "Rizqi & Asfida";
+
+      function getMessageTemplate(guestName, invitationLink) {
+        return `Assalamualaikum Warahmatullahi Wabarakaatuh,
+
+Kepada Yth. *${guestName}*
+
+Dengan menghormati, kami mohon rahmat dan ridho Allah SWT,
+perkenankan kami mengundang Saudara/i untuk hadir dalam
+bahagia pernikahan kami :
+
+🤵🏻 *${NAMA_PRIA}*
+dengan
+🧕🏻 *${NAMA_WANITA}*
+
+📅 Sabtu, 20 Juni 2026
+🕒 Pukul 09.00 WIB — Selesai
+📍 Pendopo Among Tani, Jl. Kaliurang KM 9, Sleman, DIY
+
+🔗 Klik link di bawah untuk detail undangan, konfirmasi kehadiran,
+dan ucapan restu Anda :
+${invitationLink}
+
+Kehadiran dan doa restu Bapak/Ibu/Saudara/i adalah kebahagiaan
+bagi kami. Atas kehadirannya kami ucapkan terima kasih.
+
+_Wassalamualaikum Warahmatullahi Wabarakaatuh_
+
+Hormat kami,
+*${SIGNATURE}*`;
       }
 
       function generateLinks() {
         const guestsText = document.getElementById("guestList").value;
         const resultsContainer = document.getElementById("results");
 
-        // Konfigurasi otomatis dari placeholder
-        let baseUrl = " https://lutfizainwedding.vercel.app/ ".trim();
-        const namaWanita = "LUTFI SHOIRIN NAJAH";
-        const namaPria = "DANAS ZAINUL ULUM";
-        const signature = "LUTFI & ZAIN";
-
+        let baseUrl = BASE_URL.trim();
         if (baseUrl && !baseUrl.endsWith("/")) {
           baseUrl += "/";
         }
 
-        resultsContainer.innerHTML = '<h3 class="generator-title mt-4 mb-3 fs-4">Hasil Pesan:</h3>';
+        resultsContainer.innerHTML =
+          '<h3 class="generator-title mt-4 mb-3 fs-4">Hasil Pesan WhatsApp:</h3>';
 
         const guests = guestsText
           .split("\n")
@@ -175,7 +199,7 @@
           const encodedGuestName = encodeURIComponent(guest);
           const invitationLink = `${baseUrl}#${encodedGuestName}`;
           
-          const messageText = getMessageTemplate(guest, invitationLink, namaPria, namaWanita, signature);
+          const messageText = getMessageTemplate(guest, invitationLink);
           const encodedMessage = encodeURIComponent(messageText);
           const waLink = `https://wa.me/?text=${encodedMessage}`;
           
@@ -195,6 +219,10 @@
                 </div>
               </div>
               <div class="preview-text">${safeMessage}</div>
+              <div class="thumbnail-hint">
+                <i class="bi bi-image me-1"></i>
+                WhatsApp akan menampilkan gambar undangan (<strong>couple2.jpeg</strong>) sebagai preview link otomatis saat dikirim.
+              </div>
             </div>
           `;
         });

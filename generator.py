@@ -5,24 +5,26 @@ import urllib.parse
 
 # URL dasar undangan Anda (host tempat index.html di-deploy, mis. GitHub Pages / Netlify / dst).
 # WAJIB diakhiri "/" supaya link "<url>#nama" tetap valid.
-BASE_INVITATION_URL = "https://example.com/bagus-ayu/"
+BASE_INVITATION_URL = "https://ridawedding.vercel.app/"
 
 # Nama file input dan output
 GUESTS_FILE = "tamu.txt"
 OUTPUT_FILE = "hasil.txt"
 
 # Nama mempelai untuk template pesan
-NAMA_PRIA  = "Raden Bagus Pratama, S.T."
-NAMA_WANITA = "Ayu Permata Sari, S.E."
-SIGNATURE  = "Ayu & Bagus"
+NAMA_PRIA  = "Muhammad Rizqi Mubarok"
+NAMA_WANITA = "Asfida Rahma"
+SIGNATURE  = "Rizqi & Asfida"
 
 # Template pesan WhatsApp
 # Anda bisa mengubah isi pesan di bawah ini jika perlu
-MESSAGE_TEMPLATE = f"""Kepada Yth.
-Bapak/Ibu/Saudara/i
+MESSAGE_TEMPLATE = f"""Assalamualaikum Warahmatullahi Wabarakaatuh,
 
-_Assalamualaikum Warahmatullahi Wabarakaatuh_
-Dengan memohon rahmat dan ridho Allah SWT, perkenankan kami mengundang Bapak/Ibu/Saudara/i *{{guest_name}}* untuk menghadiri acara pernikahan kami :
+Kepada Yth. *{{guest_name}}*
+
+Dengan menghormati, kami mohon rahmat dan ridho Allah SWT,
+perkenankan kami mengundang Saudara/i untuk hadir dalam
+bahagia pernikahan kami :
 
 🤵🏻 *{NAMA_PRIA}*
 
@@ -30,13 +32,18 @@ dengan
 
 🧕🏻 *{NAMA_WANITA}*
 
+📅 Sabtu, 20 Juni 2026
+🕒 Pukul 09.00 WIB — Selesai
+📍 Pendopo Among Tani, Jl. Kaliurang KM 9, Sleman, DIY
 
-*Untuk informasi detail mengenai acara, silahkan kunjungi link dibawah ini :*
+🔗 Klik link di bawah untuk detail undangan, konfirmasi kehadiran,
+dan ucapan restu Anda :
 
 *{{invitation_link}}*
 
-Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.
-Atas kehadiran dan doa restunya kami ucapkan terima kasih.
+Kehadiran dan doa restu Bapak/Ibu/Saudara/i adalah kebahagiaan
+bagi kami. Atas kehadirannya kami ucapkan terima kasih.
+
 _Wassalamualaikum Warahmatullahi Wabarakaatuh_
 
 Hormat kami,
