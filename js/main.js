@@ -2,10 +2,18 @@
 // KODE JAVASCRIPT FINAL - VERSI YANG SUDAH DIPERBAIKI
 // ===================================================================
 
-// URL Script Google Anda
-// Ganti dengan URL Web App hasil deploy Google Apps Script milik pengantin baru.
-// Lihat panduan lengkap di RSVP_SETUP.md.
-const scriptURL = "https://script.google.com/macros/s/AKfycbxMbqm7H4b0x6cROgL8ry-rUY2sjeiHs6x3GkQKO6foXO0NqFTmYevE4XzqeBDpCqiS/exec";
+// ===================================================================
+// KONFIGURASI SUPABASE (ganti dengan kredensial project Supabase Anda)
+// Lihat panduan di bagian bawah file ini atau file SUPABASE_SETUP.md
+// ===================================================================
+const SUPABASE_URL = "https://gaonwlkabonbnecaicdg.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_4CUzcEpmgfkePJOkxiklNA_K0KIyVZ9";
+let rsvpSupabase = null;
+try {
+  rsvpSupabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+  console.error("Gagal inisialisasi Supabase:", e);
+}
 
 // Menjalankan semua kode setelah halaman HTML selesai dimuat
 document.addEventListener("DOMContentLoaded", function () {
@@ -81,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   setTimeout(finishPreloader, 4200);
 
   // --- BAGIAN 2: FUNGSI PEMBANTU (HELPER FUNCTIONS) ---
-  function addWishToWall(nama, ucapan, konfirmasi, rowNumber) {
+  function addWishToWall(nama, ucapan, konfirmasi, id) {
     if (!wishWall) return;
     let statusBadge = "";
     if (konfirmasi === "Akan Hadir") {
@@ -90,8 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
       statusBadge = `<span class=\"card-status badge-tidak-hadir\">Tidak Dapat Hadir</span>`;
     }
     const newWishHTML = `
-            <div class=\"wish-card\" id=\"row-${rowNumber}\">
-                <button class="btn-delete" data-row="${rowNumber}" title="Hapus ucapan ini" >&times;</button>
+            <div class=\"wish-card\" id=\"wish-${id}\">
                 <div class=\"card-name\">${nama} ${statusBadge}</div>
                 <p class=\"card-text\">\"${ucapan}\"</p>
             </div>`;
@@ -200,18 +207,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Memuat ucapan awal dari Google Sheets
+  // Memuat ucapan awal dari Supabase
   if (wishWall) {
-    fetch(scriptURL)
-      .then((response) => response.json())
-      .then((data) => {
+    if (!rsvpSupabase) {
+      if (loadingWishes) loadingWishes.style.display = "none";
+      console.error("Supabase belum diinisialisasi.");
+      return;
+    }
+    rsvpSupabase
+      .from("rsvps")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
         if (loadingWishes) loadingWishes.style.display = "none";
-        data.reverse().forEach((wish) => {
+        if (error) {
+          if (loadingWishes) loadingWishes.textContent = "Gagal memuat ucapan.";
+          console.error("Error loading wishes!", error);
+          return;
+        }
+        (data || []).forEach((wish) => {
           addWishToWall(
-            wish.Nama,
-            wish.Ucapan,
-            wish.Konfirmasi,
-            wish.rowNumber
+            wish.nama,
+            wish.ucapan,
+            wish.konfirmasi,
+            wish.id
           );
         });
       })
@@ -258,60 +277,48 @@ document.addEventListener("DOMContentLoaded", function () {
       const nama = formData.get("Nama");
       const ucapan = formData.get("Ucapan");
       const konfirmasi = formData.get("Konfirmasi");
-      fetch(scriptURL, { method: "POST", body: formData })
-        .then((res) => res.json())
-        .then((data) => {
-          addWishToWall(nama, ucapan, konfirmasi, data.row);
-          if (rsvpModal) rsvpModal.hide();
-          form.reset();
-          if (jumlahTamuWrapper) jumlahTamuWrapper.style.display = "none";
+      if (!rsvpSupabase) {
+        console.error("Supabase belum diinisialisasi.");
+        buttonText.classList.remove("d-none");
+        buttonSpinner.classList.add("d-none");
+        submitButton.disabled = false;
+        return;
+      }
+      // Optimistic UI: tambahkan ucapan ke wish wall segera tanpa menunggu server
+      const tempId = "temp-" + Date.now();
+      addWishToWall(nama, ucapan, konfirmasi, tempId);
+      if (rsvpModal) rsvpModal.hide();
+      form.reset();
+      if (jumlahTamuWrapper) jumlahTamuWrapper.style.display = "none";
+
+      rsvpSupabase
+        .from("rsvps")
+        .insert([{ nama, ucapan, konfirmasi, jumlah: formData.get("Jumlah") || "" }])
+        .then(({ data, error }) => {
+          if (error) {
+            console.error("Error!", error.message);
+            // Hapus ucapan temp jika insert gagal (opsional)
+            const tempCard = document.getElementById(`wish-${tempId}`);
+            if (tempCard) tempCard.remove();
+            return;
+          }
+          // Jika Supabase mengembalikan id asli, ganti ID temp dengan id asli
+          const inserted = data?.[0];
+          if (inserted && inserted.id) {
+            const tempCard = document.getElementById(`wish-${tempId}`);
+            if (tempCard) tempCard.id = `wish-${inserted.id}`;
+          }
         })
         .catch((error) => {
           console.error("Error!", error.message);
+          const tempCard = document.getElementById(`wish-${tempId}`);
+          if (tempCard) tempCard.remove();
         })
         .finally(() => {
           buttonText.classList.remove("d-none");
           buttonSpinner.classList.add("d-none");
           submitButton.disabled = false;
         });
-    });
-  }
-
-  // Logika untuk menghapus ucapan
-  if (wishWall) {
-    wishWall.addEventListener("click", function (e) {
-      if (e.target && e.target.classList.contains("btn-delete")) {
-        const rowNumber = e.target.dataset.row;
-        if (!confirm("Anda yakin ingin menghapus ucapan ini?")) return;
-        const password = prompt("Untuk keamanan, masukkan password admin:");
-        if (password === null) return;
-        const cardToDelete = document.getElementById(`row-${rowNumber}`);
-        e.target.disabled = true;
-        e.target.innerHTML = "...";
-        const deleteFormData = new FormData();
-        deleteFormData.append("action", "delete");
-        deleteFormData.append("row", rowNumber);
-        deleteFormData.append("password", password);
-        fetch(scriptURL, { method: "POST", body: deleteFormData })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.result === "success") {
-              cardToDelete.style.transition = "opacity 0.5s";
-              cardToDelete.style.opacity = "0";
-              setTimeout(() => cardToDelete.remove(), 500);
-            } else {
-              alert(data.message || "Gagal menghapus. Cek password Anda.");
-              e.target.disabled = false;
-              e.target.innerHTML = "&times;";
-            }
-          })
-          .catch((error) => {
-            alert("Terjadi kesalahan. Gagal menghapus.");
-            console.error("Error!", error.message);
-            e.target.disabled = false;
-            e.target.innerHTML = "&times;";
-          });
-      }
     });
   }
 
@@ -497,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 2. Section #mempelai — judul dengan animasi bounce
     revealTextBounce("#mempelai h2", "#mempelai");
-    fadeUp("#mempelai > .container > p", { trigger: "#mempelai", start: "top 82%" });
+    fadeUp("#mempelai .container p", { trigger: "#mempelai", start: "top 82%" });
 
     // Foto & teks mempelai: fade-up anggun dan lembut tanpa glitch horizontal di HP
     fadeUp(".mempelai-pria", { trigger: ".mempelai-pria", start: "top 85%", y: 30, duration: 1.1 });
