@@ -32,9 +32,13 @@ dengan
 
 🧕🏻 *{NAMA_WANITA}*
 
-📅 Sabtu, 20 Juni 2026
-🕒 Pukul 09.00 WIB — Selesai
-📍 Pendopo Among Tani, Jl. Kaliurang KM 9, Sleman, DIY
+📅 Sabtu, 12 Desember 2026 — Akad Nikah & Resepsi
+🕒 Pukul 08.00 WIB — Selesai
+📍 Kediaman Mempelai Putri, Jl. Masjid Al-Huda 59, RT 06/RW 02, Kel. Ngadirejo, Kec. Kota Kediri, Jawa Timur
+
+📅 Ahad, 13 Desember 2026 — Resepsi
+🕒 Pukul 10.00 WIB — Selesai
+📍 Kediaman Mempelai Putra, GG Masjid Al-Abror, Dsn. Tebokan, Ds. Boro, Kec. Kedungwaru, Kab. Tulungagung
 
 🔗 Klik link di bawah untuk detail undangan, konfirmasi kehadiran,
 dan ucapan restu Anda :
